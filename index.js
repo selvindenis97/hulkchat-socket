@@ -1,5 +1,7 @@
 const { Server } = require("socket.io");
 
+require('dotenv').config();
+
 var activeUsers = [];
 
 const io = new Server({ cors: process.env.ORIGIN_DOMAIN });
@@ -19,19 +21,15 @@ io.on("connection", (socket) => {
 
     socket.on('addNewUser', (userName) => {
         addUser({ username: userName, socket: socket.id });
-        console.log(activeUsers);
         io.emit("usersUpdated", activeUsers);
     })
 
     socket.on('disconnect', () => {
         removeUser(socket.id);
-        console.log("disconnect", socket.id)
-        console.log(activeUsers);
         io.emit("usersUpdated", activeUsers);
     })
 
     socket.on('newMessage', (message) => {
-        console.log("message new", message);
         io.emit(`${message.receiverId}`, message);
     })
 });
