@@ -1,4 +1,4 @@
-ni const { Server } = require("socket.io");
+const { Server } = require("socket.io");
 
 require('dotenv').config();
 
