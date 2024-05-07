@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 
 var activeUsers = [];
 
-const io = new Server({ cors: 'http://localhost:5173' });
+const io = new Server({ cors: process.env.ORIGIN_DOMAIN });
 
 function addUser(newUser) {
     if (!activeUsers.some((user) => user.username === newUser.username)) {
@@ -16,7 +16,6 @@ function removeUser(socket) {
 
 
 io.on("connection", (socket) => {
-    console.log("new connection", socket.id);
 
     socket.on('addNewUser', (userName) => {
         addUser({ username: userName, socket: socket.id });
